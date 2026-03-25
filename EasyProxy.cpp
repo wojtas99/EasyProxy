@@ -36,10 +36,12 @@ void EasyProxy::startProxy() {
         return;
     }
 
+    long int packetID = 1;
+
     while (true)
     {
         if (WinDivertRecv(handle, packet, sizeof(packet), &readLen, &addr)) {
-            std::string direction = addr.Outbound ? "Client->Server" : "Server->Client";
+            std::string direction = "Packet ID: " + std::to_string(packetID) + (addr.Outbound ? " [Client->Server]" : " [Server->Client]");
 
             PWINDIVERT_IPHDR ip_header = nullptr;
             PWINDIVERT_TCPHDR tcp_header = nullptr;
@@ -54,29 +56,23 @@ void EasyProxy::startProxy() {
             );
 
             if (payload != nullptr && payload_len > 0) {
-                logger->log("[" + direction + "] Size " + std::to_string(payload_len) + " bytes");
+                direction += " Size " + std::to_string(payload_len) + " bytes\n";
                 std::vector<uint8_t> packetData;
                 packetData.assign(static_cast<uint8_t*>(payload), static_cast<uint8_t*>(payload) + payload_len);
                 std::stringstream dump;
                 for (size_t i = 0; i < packetData.size(); i += 16) {
                     std::stringstream hexPart;
-                    std::string asciiPart = "";
                     for (size_t j = 0; j < 16; ++j) {
                         if (i + j < packetData.size()) {
                             hexPart << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << (int)packetData[i + j] << " ";
-
-                            if (packetData[i + j] >= 32 && packetData[i + j] <= 126) {
-                                asciiPart += (char)packetData[i + j];
-                            } else {
-                                asciiPart += '.';
-                            }
                         } else {
                             hexPart << "   ";
                         }
                     }
-                    dump << hexPart.str() << " | " << asciiPart << "\n";
+                    dump << hexPart.str() << "\n";
                 }
-                logger->log(dump.str());
+                logger->log(direction + dump.str());
+                ++packetID;
             }
             UINT writeLen;
             if (!WinDivertSend(handle, packet, readLen, &writeLen, &addr)) {

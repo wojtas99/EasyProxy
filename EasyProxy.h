@@ -12,6 +12,7 @@ private:
     Logger* logger = new Logger(LOG_TO_FILE, LOG_TO_CONSOLE, "EasyLogger.txt");
     std::string targetIP;
     int targetPort = 0;
+
 public:
     EasyProxy(const std::string& ip, int port);
     ~EasyProxy();
