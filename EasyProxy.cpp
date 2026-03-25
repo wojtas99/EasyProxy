@@ -32,7 +32,7 @@ void EasyProxy::startProxy() {
 
     handle = WinDivertOpen(filter.c_str(), WINDIVERT_LAYER_NETWORK, 0, 0);
     if (handle == INVALID_HANDLE_VALUE) {
-        logger->log("Failed to open WinDivert handle. Open it as ADMINISTRATOR!");
+        logger->log("Failed to open WinDivert handle. Error: " + std::to_string(GetLastError()));
         return;
     }
 

@@ -413,7 +413,7 @@ class App(tk.Tk):
             if pkt["decrypted"]:
                 self.detail.insert(tk.END, "\n", "")
                 self.detail.insert(tk.END,
-                    f"  [Decrypted]  key={[hex(k) for k in pkt['key']]}\n", "key")
+                    f"  [Decrypted]\n", "key")
                 self.detail.insert(tk.END, hex_dump(pkt["decrypted"]) + "\n", "hex")
             else:
                 self.detail.insert(tk.END,
