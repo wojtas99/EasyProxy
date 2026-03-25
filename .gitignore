@@ -1,3 +1,5 @@
 .idea
 EasyProxy.exe
 EasyLogger.txt
+WinDivert.dll
+WinDivert64.sys
