@@ -23,11 +23,14 @@ endif()
 add_executable(EasyProxy
         main.cpp
         EasyProxy.cpp
-        Logger.h
+        Logger.cpp
 )
+
+target_compile_definitions(EasyProxy PRIVATE WIN32_LEAN_AND_MEAN)
 
 target_link_libraries(EasyProxy PRIVATE
         WinDivert.lib
+        ws2_32
 )
 
 

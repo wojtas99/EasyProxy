@@ -3,3 +3,5 @@ EasyProxy.exe
 EasyLogger.txt
 WinDivert.dll
 WinDivert64.sys
+protocolcodes.h
+pipe_listener.py
